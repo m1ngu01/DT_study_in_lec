@@ -1,0 +1,34 @@
+/*
+* 프로그램 10.1 배열을 이용한 힙의 기본 틀
+*  
+*/
+
+
+// implement heap tree
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_HEAP_NODE 200
+
+//프로그램 3.1의 함수와 동일
+void error(const char str[]) {
+	printf("%s\n", str);
+	exit(1);
+}
+
+typedef int HNode;
+#define key(n) (n)
+
+HNode heap[MAX_HEAP_NODE];
+int heap_size;
+
+#define Parent(i) (heap[i/2]);		/* i의 부모 노드 */
+#define Left(i) (heap[i*2]);		/* i의 왼쪽 자식 노드*/
+#define Right(i) (heap[i*2 + 1]);	/* i의 오른쪽 자식 노드*/
+
+void init_heap() { heap_size = 0; }
+
+int is_empty_heap() { return heap_size == 0; }
+int is_full_heao() { return (heap_size == MAX_HEAP_NODE - 1); }
+HNode find_heap() { return heap[1]; }
