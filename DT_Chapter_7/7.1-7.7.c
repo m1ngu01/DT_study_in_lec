@@ -1,18 +1,24 @@
+/*
+* í”„ë¡œê·¸ë¨ ë‚´ìš© : 7.1 ~ 7.7 ì¢…í•© í”„ë¡œê·¸ë¨
+* ì‹¤ìŠµì¼ : 2023.05.24
+* ì‹¤ìŠµì : ì„ë¯¼ê·œ
+* í•™ë²ˆ : 202011309
+*/
 #include <stdio.h>
 
-//7.1 ¼øÈ¯ÀûÀÎ ÆÑÅä¸®¾ó °è»ê ÇÔ¼ö 
+//7.1 ìˆœí™˜ì ì¸ íŒ©í† ë¦¬ì–¼ ê³„ì‚° í•¨ìˆ˜ 
 int factorial(int n) {
 	if (n == 1) return 1;
 	else return (n * factorial(n - 1));
 }
-//7.2 Ãâ·Â¹®ÀÌ Ãß°¡µÈ ¼øÈ¯ÀûÀÎ ÆÑÅä¸®¾ó °è»ê ÇÁ·Î±×·¥
+//7.2 ì¶œë ¥ë¬¸ì´ ì¶”ê°€ëœ ìˆœí™˜ì ì¸ íŒ©í† ë¦¬ì–¼ ê³„ì‚° í”„ë¡œê·¸ë¨
 int factorial(int n) {
 	printf("factorial(%2d)\n", n);
 	if (n == 1) return 1;
 	else return (n * factorial(n - 1));
 }
 
-//7.3 ¹İº¹ÀûÀÎ ÆÑÅä¸®¾ó °è»ê ÇÔ¼ö
+//7.3 ë°˜ë³µì ì¸ íŒ©í† ë¦¬ì–¼ ê³„ì‚° í•¨ìˆ˜
 int factorial_iter(int n) {
 	int k, result = 1;
 	for (k = n; k > 0; k--)
@@ -20,7 +26,7 @@ int factorial_iter(int n) {
 	return result;
 }
 
-//7.4 ¹İº¹ÀûÀÎ °ÅµìÁ¦°ö °è»ê ÇÔ¼ö
+//7.4 ë°˜ë³µì ì¸ ê±°ë“­ì œê³± ê³„ì‚° í•¨ìˆ˜
 double slow_power(double x, int n) {
 	int i;
 	double result = 1.0;
@@ -28,7 +34,7 @@ double slow_power(double x, int n) {
 		result = result * x;
 	return result;
 }
-//7.5 ¼øÈ¯ÀûÀÎ °Åµì Á¦°ö °è»ê ÇÔ¼ö
+//7.5 ìˆœí™˜ì ì¸ ê±°ë“­ ì œê³± ê³„ì‚° í•¨ìˆ˜
 double power(double x, int n) {
 	if (n == 0) return 1;
 	else if ((n % 2) == 0)
@@ -37,14 +43,14 @@ double power(double x, int n) {
 		return x * power(x * x, (n - 1) / 2);
 }
 
-//7.6 ¼øÈ¯ÀûÀÎ ÇÇº¸³ªÄ¡¼ö¿­ °è»ê ÇÔ¼ö
+//7.6 ìˆœí™˜ì ì¸ í”¼ë³´ë‚˜ì¹˜ìˆ˜ì—´ ê³„ì‚° í•¨ìˆ˜
 int fib(int n) {
 	if (n == 0) return 0;
 	if (n == 1)return 1;
 	return (fib(n - 1) + fib(n - 2));
 }
 
-//7.7 ¹İº¹ÀûÀÎ ÇÇº¸³ªÄ¡ ¼ö¿­ °è»ê ÇÔ¼ö
+//7.7 ë°˜ë³µì ì¸ í”¼ë³´ë‚˜ì¹˜ ìˆ˜ì—´ ê³„ì‚° í•¨ìˆ˜
 int fib_iter(int n) {
 	int i, tmp, current, last;
 	if (n < 2) return n;
