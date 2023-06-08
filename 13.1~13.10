@@ -1,0 +1,183 @@
+
+#include <stdio.h>
+
+/*13.1---------------------------------------------*/
+
+#define SWAP(x,y,t) ((t)=(x),(x)=(y),(y)=(t))
+
+void printArray(int arr[], int n, const char* str)
+{
+	int i;
+	printf("%s = ", str);
+	for (i = 0; i < n; i++)
+		printf("%3d", arr[i]);
+	printf("\n");
+}
+
+void printStep(int arr[], int n, int val)
+{
+	int i;
+	printf("	Step %2d = ", val);
+	for( i = 0; i<n; i++)
+		printf("%3d", arr[i]);
+	printf("\n");
+}
+
+void selection_sort(int list[], int n)
+{
+	int i, j, least, tmp;
+	for (i = 0; i < n - 1; i++) {
+		least = i;
+		for (j = i + 1; j < n; j++)
+			if (list[j] < list[least])
+				least = j;
+		SWAP(list[i], list[least], tmp);
+		printStep(list, n, i + 1);
+	}
+}
+/*13.1---------------------------------------------*/
+
+/*13.2---------------------------------------------*/
+void insertion_sort(int list[], int n)
+{
+	int i, j, key;
+	for (i = 1; i < n; i++) {
+		key = list[i];
+		for (j = i - 1; j >= 0 && list[j] > key;j--)
+			list[j + 1] = list[j]; // 레코드의 오른쪽 이동
+		list[j+1] = key;
+		printStep(list, n, i); // 중간 과정 출력용 문장}
+	}
+}
+/*13.2---------------------------------------------*/
+
+/*13.3---------------------------------------------*/
+void bubble_sort(int list[], int n)
+{
+	int i, j, bChanged, tmp;
+	for (i = n - 1; i > 0; i--) {
+		bChanged = 0;
+		for (j = 0; j < i; j++)
+			if (list[j] > list[j + 1]) {
+				SWAP(list[j], list[j + 1], tmp);
+				bChanged = 1;
+			}
+		if (!bChanged) break;
+		printStep(list, n, n - i); // 중간 과정 출력용 문장}
+	}
+}
+/*13.3---------------------------------------------*/
+
+/*13.4---------------------------------------------*/
+
+int ascend(int x, int y) { return y - x; }
+int descend(int x, int y) { return x - y; }
+
+void insertion_sort_fn(int list[], int n, int (*f)(int, int)) {
+	int i, j, key;
+	for (i = 1; i < n; i++) 
+	{
+		key = list[i];
+		for (j = i - 1; j >= 0 && f(list[j], key) < 0;j--)
+			list[j + 1] = list[j];
+		list[j + 1] = key;
+	}
+}
+//insertion_sort_fn( list, n, descend ); // 내림차순 선택정렬 알고리즘
+/*13.4---------------------------------------------*/
+
+/*13.5---------------------------------------------*/
+static void sortGapInsertion(int list[], int first, int last, int gap) {
+	int i, j, key;
+	for (i = first + gap; i <= last; i = i + gap) {
+		key = list[i];
+		for (j = i - gap; j >= first && key < list[j]; j = j - gap)
+			list[j + gap] = list[j];
+		list[j + gap] = key;
+	}
+}
+void shell_sort(int list[], int n)
+{
+	int i, gap, count = 0;
+	for (gap = n / 2; gap > 0; gap = gap / 2) {
+		if ((gap % 2) == 0) gap++;
+		for (i = 0; i < gap; i++)
+			sortGapInsertion(list, i, n - 1, gap);
+	}
+}
+/*13.5---------------------------------------------*/
+
+/*13.6---------------------------------------------*/
+#define MAX_SIZE 1024
+static void merge(int list[], int left, int mid, int right) {
+	int i, j, k = left, l;
+	static int sorted[MAX_SIZE];
+	for (i = left, j = mid + 1; i <= mid && j <= right; )
+		sorted[k++] = (list[i] <= list[j]) ? list[i++] : list[j++];if (i > mid)
+		for (l = j; l <= right; l++, k++)
+			sorted[k] = list[l];
+		else
+		for (l = i; l <= mid; l++, k++)
+			sorted[k] = list[l];
+	for (l = left; l <= right; l++)
+		list[l] = sorted[l];
+}
+void merge_sort(int list[], int left, int right) {
+	if (left < right) {
+		int mid = (left + right) / 2;
+		merge_sort(list, left, mid);
+		merge_sort(list, mid + 1, right);
+		merge(list, left, mid, right);
+	}
+}
+/*13.6---------------------------------------------*/
+
+/*13.7---------------------------------------------*/
+int partition(int list[], int left, int right);
+void quick_sort(int list[], int left, int right)
+{
+	int q;
+	if (left < right) {
+		q = partition(list, left, right);
+		quick_sort(list, left, q - 1);
+		quick_sort(list, q + 1, right);
+	}
+}
+/*13.7---------------------------------------------*/
+
+/*13.8---------------------------------------------*/
+int partition(int list[], int left, int right)
+{
+	int tmp;
+	int low = left + 1;
+	int high = right;
+	int pivot = list[left]; // 피벗 설정
+	while (low < high) { // low와 high가 역전되지 않는 한 반복
+		for (; low <= right && list[low] < pivot; low++);
+		for (; high >= left && list[high] > pivot; high--);
+		if (low < high) // 선택된 두 레코드 교환
+			SWAP(list[low], list[high], tmp);
+	}
+	SWAP(list[left], list[high], tmp); // high와 피벗 항목 교환
+	return high;
+}
+/*13.8---------------------------------------------*/
+/*13.10---------------------------------------------*/
+
+#define BUCKETS 10
+#define DIGITS 4
+void radixSort(int list[], int n)
+{
+	Queue queues[BUCKETS];
+	int factor = 1, i, b, d;
+	for (i = 0; i < BUCKETS; i++)
+		init_queue(&queues[i]);
+	for (d = 0; d < DIGITS; d++) {
+		for (i = 0; i < n; i++)
+			enqueue(&queues[(list[i] / factor) % 10], list[i]);
+		for (b = i = 0; b < BUCKETS; b++)
+			while (!is_empty(&queues[b]))
+				list[i++] = dequeue(&queues[b]);
+		factor *= 10;
+	}
+}
